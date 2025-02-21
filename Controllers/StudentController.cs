@@ -13,5 +13,10 @@ namespace Eyouth1.Controllers
         {
             return View();
         }
+
+        public IActionResult AddStudent()
+        {
+            return View();
+        }
     }
 }
