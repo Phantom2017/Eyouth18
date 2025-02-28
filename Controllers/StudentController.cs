@@ -1,22 +1,26 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Eyouth1.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Eyouth1.Controllers
 {
     public class StudentController : Controller
     {
+        StudentBL studentBL;
+        public StudentController()
+        {
+           studentBL = new StudentBL();
+        }
         public IActionResult Index()
         {
-            return View();
+            return View(studentBL.GetAll());
         }
 
-        public IActionResult ViewStudent()
+        [HttpGet]
+        public IActionResult Details(int id)
         {
-            return View();
+            return View(studentBL.GetById(id));
         }
 
-        public IActionResult AddStudent()
-        {
-            return View();
-        }
+       
     }
 }
