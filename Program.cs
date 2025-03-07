@@ -8,6 +8,10 @@ namespace Eyouth1
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromDays(5);
+            });
 
             var app = builder.Build();
 
@@ -16,10 +20,13 @@ namespace Eyouth1
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-            app.UseStaticFiles();
+            app.UseStaticFiles();  //short-Circiut
+
+            app.UseSession();
 
             app.UseRouting();
 
+            //app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(
