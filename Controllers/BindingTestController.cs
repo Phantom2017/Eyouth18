@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Eyouth1.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Eyouth1.Controllers
 {
@@ -9,7 +10,7 @@ namespace Eyouth1.Controllers
             return View();
         }
 
-        public IActionResult testPr(string str,int v1) 
+        public IActionResult testPr(string str,int v1, string[] names) 
         {
             //From action to view ===>ViewData, ViewBag, ViewModel, Model
 
@@ -22,6 +23,17 @@ namespace Eyouth1.Controllers
              
              */
 
+            return Content("OK");
+        }
+
+        public IActionResult TestNew(Dictionary<string,int> dic)
+        {
+            //Select 
+            return Content("OK");
+        }
+
+        public IActionResult TestComp(Department dept)
+        {
             return Content("OK");
         }
     }

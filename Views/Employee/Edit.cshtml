@@ -1,0 +1,39 @@
+﻿@model Employee
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<form action="/Employee/SaveNew" method="post">
+    <label for="Name" class="form-label">Name</label>
+    @* HTML Helpers ---> pure C# *@
+    @* @Html.TextBox("Name") *@
+    @Html.TextBoxFor(m=>m.Name)
+    @* @Html.EditorFor(m=>m.Address) *@
+    @* <input type="text" class="form-control" name="Name" id="Name" value="@Model?.Name" /> *@
+    <label for="Name" class="form-label">Name</label>
+    <input type="text" class="form-control" name="Address" id="Address" value="@Model?.Address" />
+    <label for="Name" class="form-label">Name</label>
+    <input type="number" class="form-control" name="Salary" id="Name" value="@Model?.Salary" />
+    <label for="Name" class="form-label">Name</label>
+    <input type="text" class="form-control" name="Img" id="Name" value="@Model?.Img" />
+    <label for="Department" class="form-label">Department</label>
+    <select class="form-select" name="DeptId" id="Department" >
+        @foreach (var item in ViewBag.list)
+        {
+            if (item.Id == Model.DeptId)
+            {
+                <option value="@item.Id" selected>@item.Name</option>
+            }
+            else
+            {
+                <option value="@item.Id">@item.Name</option>
+            }
+            
+        }
+    </select>
+    <input type="hidden" name="Id" value="@Model?.Id" />
+    <input type="submit" value="Save" class="btn btn-primary" />
+</form>
+

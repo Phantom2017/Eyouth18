@@ -15,6 +15,23 @@ namespace Eyouth1.Controllers
             return View(companyCtx.Departments.ToList());
         }
 
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult SaveDept(Department dept)
+        {
+            if (dept.Name!=null)
+            {
+                companyCtx.Departments.Add(dept);
+                companyCtx.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View("Create",dept);
+        }
+
         public IActionResult Details(int id)
         {
             string compName = "ABC";
