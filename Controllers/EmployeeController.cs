@@ -24,6 +24,7 @@ namespace Eyouth1.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult SaveNew(Employee emp)
         {
             if (emp.Name!=null)
@@ -33,6 +34,28 @@ namespace Eyouth1.Controllers
                 return RedirectToAction("Index");
             }
             return View("Edit",emp);
+        }
+
+        public ActionResult Create()
+        {
+            ViewData["list"] = companyCtx.Departments.ToList();
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(Employee emp)
+        {
+            if (ModelState.IsValid)
+            {
+                companyCtx.Employees.Add(emp);
+                companyCtx.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            else {
+                ViewData["list"] = companyCtx.Departments.ToList();
+                return View(emp);
+            }
         }
     }
 }

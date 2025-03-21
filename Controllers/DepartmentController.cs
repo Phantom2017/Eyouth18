@@ -81,5 +81,11 @@ namespace Eyouth1.Controllers
 
             return Content("name= " + name + " num= " + num);
         }
+
+        public IActionResult Edit(int id)
+        {
+            var dept=companyCtx.Departments.Find(id);
+            return View(dept);
+        }
     }
 }

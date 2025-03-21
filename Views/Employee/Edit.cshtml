@@ -1,15 +1,17 @@
 ﻿@model Employee
 @{
     ViewData["Title"] = "Edit";
+    SelectList items = new SelectList(ViewBag.list, "Id", "Name");
+    //Layout = "_MyLayout";
 }
 
 <h1>Edit</h1>
-
+@* @Html.ActionLink() *@
 <form action="/Employee/SaveNew" method="post">
     <label for="Name" class="form-label">Name</label>
     @* HTML Helpers ---> pure C# *@
     @* @Html.TextBox("Name") *@
-    @Html.TextBoxFor(m=>m.Name)
+    @Html.TextBoxFor(m=>m.Name,new {@class="form-control"})
     @* @Html.EditorFor(m=>m.Address) *@
     @* <input type="text" class="form-control" name="Name" id="Name" value="@Model?.Name" /> *@
     <label for="Name" class="form-label">Name</label>
@@ -19,7 +21,7 @@
     <label for="Name" class="form-label">Name</label>
     <input type="text" class="form-control" name="Img" id="Name" value="@Model?.Img" />
     <label for="Department" class="form-label">Department</label>
-    <select class="form-select" name="DeptId" id="Department" >
+    @* <select class="form-select" name="DeptId" id="Department" >
         @foreach (var item in ViewBag.list)
         {
             if (item.Id == Model.DeptId)
@@ -32,8 +34,13 @@
             }
             
         }
-    </select>
+    </select> *@
+    <select class="form-select" asp-for="DeptId" asp-items="items"></select>
     <input type="hidden" name="Id" value="@Model?.Id" />
     <input type="submit" value="Save" class="btn btn-primary" />
 </form>
 
+@* @section foot{
+    <h2 class="text-primary">Hello @Model?.Name</h2>
+}
+ *@
