@@ -1,3 +1,6 @@
+using Eyouth1.Models;
+using Microsoft.EntityFrameworkCore;
+
 namespace Eyouth1
 {
     public class Program
@@ -11,6 +14,11 @@ namespace Eyouth1
             builder.Services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromDays(5);
+            });
+
+            builder.Services.AddDbContext<CompanyCtx>(opt =>
+            {
+                opt.UseSqlServer(builder.Configuration.GetConnectionString("con"));
             });
 
             var app = builder.Build();

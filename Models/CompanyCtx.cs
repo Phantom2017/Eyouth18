@@ -9,6 +9,11 @@ namespace Eyouth1.Models
             
         }
 
+        public CompanyCtx(DbContextOptions options):base(options)
+        {
+            
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("Data Source=.\\sql19;Initial Catalog=Company5;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");

@@ -4,6 +4,15 @@
 }
 
 <h1>Create</h1>
+@* @Html.Partial("_MyPartial")
+@{
+    Html.RenderPartial("_MyPartial");    
+}
+ *@
+@* <partial name="_MyPartial" />*@
+<label for="deptId">Select dept:</label>
+<input type="number" id="deptId" />
+
 <form action="/Department/SaveDept" method="post">
     <label for="Name" class="form-label">Name</label>
     <input type="text" class="form-control" name="Name" id="Name" value="@Model?.Name"/>
@@ -12,4 +21,18 @@
     <input type="text" class="form-control" name="MgrName" id="MgrName" value="@Model?.MgrName"/>
     <input type="submit" value="Save" class="btn btn-primary"/>
 </form>
+<button onclick="getData()" class="btn btn-success">Try Partial</button>
+<div id="d1"></div>
+<script>
+    function getData(){
+        $.ajax({
+            url:"/Department/DispalyPartial",
+            type:"GET",
+            data:{deptId:$("#deptId").val()},
+            success:function(result){
+                $("#d1").html(result);
+            }
+        })
+    }
+</script>
 

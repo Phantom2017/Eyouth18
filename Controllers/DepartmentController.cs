@@ -6,9 +6,9 @@ namespace Eyouth1.Controllers
     public class DepartmentController : Controller
     {
         CompanyCtx companyCtx;
-        public DepartmentController()
+        public DepartmentController(CompanyCtx _companyCtx)
         {
-            companyCtx = new CompanyCtx();
+            companyCtx = _companyCtx;
         }
         public IActionResult Index()
         {
@@ -86,6 +86,12 @@ namespace Eyouth1.Controllers
         {
             var dept=companyCtx.Departments.Find(id);
             return View(dept);
+        }
+
+        public IActionResult DispalyPartial(int deptId)
+        {
+            var emps=companyCtx.Employees.Where(e=>e.DeptId==deptId).ToList();
+            return PartialView("_MyPartial",emps);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Eyouth1.Models
@@ -9,7 +10,7 @@ namespace Eyouth1.Models
         public int Id { get; set; }
         [Required(ErrorMessage ="Enter valid name")]
         [StringLength(50,MinimumLength =10)]
-        [UniqueName]
+        [UniqueName(AnyField ="ABC")]
         //[Compare("Password")]
         public string Name { get; set; }
         //[EmailAddress]
@@ -19,7 +20,9 @@ namespace Eyouth1.Models
         public string Address { get; set; }
         //[DataType(DataType.PhoneNumber)]
         [Range(6000,10000)]
-       // [RegularExpression(@"\d{6}")]
+        // [RegularExpression(@"\d{6}")]
+        //Only in MVC
+        [Remote("MutipleThree","Employee",AdditionalFields ="Name")]
         public decimal Salary { get; set; }
         [Url]
         public string Img { get; set; }

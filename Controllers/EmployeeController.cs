@@ -27,7 +27,7 @@ namespace Eyouth1.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult SaveNew(Employee emp)
         {
-            if (emp.Name!=null)
+            if (ModelState.IsValid)
             {
                 companyCtx.Employees.Update(emp);
                 companyCtx.SaveChanges();
@@ -46,16 +46,26 @@ namespace Eyouth1.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Employee emp)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && emp.DeptId!=0)
             {
                 companyCtx.Employees.Add(emp);
                 companyCtx.SaveChanges();
                 return RedirectToAction("Index");
             }
             else {
+                ModelState.AddModelError("", "Please select dept");
                 ViewData["list"] = companyCtx.Departments.ToList();
                 return View(emp);
             }
+        }
+
+        public JsonResult MutipleThree(decimal Salary,string Name)
+        {
+            if (Salary % 3 == 0)
+            {
+                return Json(true);
+            }
+            return Json(false);
         }
     }
 }

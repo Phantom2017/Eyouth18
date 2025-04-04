@@ -35,7 +35,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="DeptId" class="control-label"></label>
-                <select asp-for="DeptId" class ="form-control" asp-items="list"></select>
+                <select asp-for="DeptId" class ="form-control" asp-items="list">
+                    <option value="0">--Select Department--</option>
+                </select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
