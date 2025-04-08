@@ -6,11 +6,11 @@ namespace Eyouth1.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        //private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController()
         {
-            _logger = logger;
+            //_logger = logger;
         }
 
         //Action
@@ -19,7 +19,8 @@ namespace Eyouth1.Controllers
         //3) Can't be overloaded
         public IActionResult Index()
         {
-            return View();
+            ViewData["par"] = 50;
+            return View("Index",new List<Employee>());
         }
 
         public ContentResult Hello()

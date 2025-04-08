@@ -1,25 +1,35 @@
 ﻿using Eyouth1.Models;
+using Eyouth1.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Eyouth1.Controllers
 {
     public class EmployeeController : Controller
     {
-        CompanyCtx companyCtx;
-        public EmployeeController()
+        //private readonly IEmployeeRepository employeeRepository;
+        //private readonly IDepartmentRepository departmentRepository;
+        private readonly IUnitOfWork unitOfWork;
+
+        //CompanyCtx companyCtx;
+        public EmployeeController(IUnitOfWork unitOfWork)
         {
-            companyCtx = new CompanyCtx(); 
+            //this.employeeRepository = employeeRepository;
+            //this.departmentRepository = departmentRepository;
+            this.unitOfWork = unitOfWork;
+            //companyCtx = new CompanyCtx(); 
         }
 
         public IActionResult Index()
         {
-            return View(companyCtx.Employees.ToList());
+            return View(unitOfWork.EmployeeRepository.GetAll());
         }
 
         public IActionResult Edit(int Id)
         {
-            var emp=companyCtx.Employees.Find(Id);
-            ViewData["list"]=companyCtx.Departments.ToList();
+            //var emp=companyCtx.Employees.Find(Id);
+            var emp = unitOfWork.EmployeeRepository.GetById(Id);
+            ViewData["list"] = unitOfWork.DepartmentRepository.GetAll();
+            //ViewData["list"]=companyCtx.Departments.ToList();
             return View(emp);
         }
 
@@ -29,8 +39,10 @@ namespace Eyouth1.Controllers
         {
             if (ModelState.IsValid)
             {
-                companyCtx.Employees.Update(emp);
-                companyCtx.SaveChanges();
+                unitOfWork.EmployeeRepository.Update(emp);
+                unitOfWork.Complete();
+                //companyCtx.Employees.Update(emp);
+                //companyCtx.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View("Edit",emp);
@@ -38,7 +50,8 @@ namespace Eyouth1.Controllers
 
         public ActionResult Create()
         {
-            ViewData["list"] = companyCtx.Departments.ToList();
+            ViewData["list"] = unitOfWork.DepartmentRepository.GetAll();
+            //ViewData["list"] = companyCtx.Departments.ToList();
             return View();
         }
 
@@ -48,13 +61,16 @@ namespace Eyouth1.Controllers
         {
             if (ModelState.IsValid && emp.DeptId!=0)
             {
-                companyCtx.Employees.Add(emp);
-                companyCtx.SaveChanges();
+                unitOfWork.EmployeeRepository.Add(emp);
+                unitOfWork.Complete();
+                //companyCtx.Employees.Add(emp);
+                //companyCtx.SaveChanges();
                 return RedirectToAction("Index");
             }
             else {
                 ModelState.AddModelError("", "Please select dept");
-                ViewData["list"] = companyCtx.Departments.ToList();
+                ViewData["list"] = unitOfWork.DepartmentRepository.GetAll();
+                //ViewData["list"] = companyCtx.Departments.ToList();
                 return View(emp);
             }
         }

@@ -1,4 +1,5 @@
 using Eyouth1.Models;
+using Eyouth1.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace Eyouth1
@@ -21,6 +22,10 @@ namespace Eyouth1
                 opt.UseSqlServer(builder.Configuration.GetConnectionString("con"));
             });
 
+            //builder.Services.AddScoped<IEmployeeRepository,EmployeeRepository>();
+            //builder.Services.AddScoped<IDepartmentRepository,DepartmentRepository>();    
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -38,10 +43,14 @@ namespace Eyouth1
             app.UseAuthorization();
 
             app.MapControllerRoute(
+                name: "myRoute",
+                pattern: "app/{controller=Employee}/{action=Index}");
+
+            app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
-
             
+
 
             app.Run();
         }

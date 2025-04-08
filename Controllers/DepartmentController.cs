@@ -1,18 +1,25 @@
 ﻿using Eyouth1.Models;
+using Eyouth1.Repository;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 
 namespace Eyouth1.Controllers
 {
     public class DepartmentController : Controller
     {
-        CompanyCtx companyCtx;
-        public DepartmentController(CompanyCtx _companyCtx)
+        private readonly IUnitOfWork unitOfWork;
+
+        //CompanyCtx companyCtx;
+        public DepartmentController(IUnitOfWork unitOfWork)
         {
-            companyCtx = _companyCtx;
+            this.unitOfWork = unitOfWork;
+            //companyCtx = _companyCtx;
         }
+
+        [OutputCache(Duration = 60)]
         public IActionResult Index()
         {
-            return View(companyCtx.Departments.ToList());
+            return View(unitOfWork.DepartmentRepository.GetAll());
         }
 
         public IActionResult Create()
@@ -25,8 +32,8 @@ namespace Eyouth1.Controllers
         {
             if (dept.Name!=null)
             {
-                companyCtx.Departments.Add(dept);
-                companyCtx.SaveChanges();
+                unitOfWork.DepartmentRepository.Add(dept);
+                unitOfWork.Complete();
                 return RedirectToAction("Index");
             }
             return View("Create",dept);
@@ -47,7 +54,7 @@ namespace Eyouth1.Controllers
 
             //ViewModel
 
-            return View(companyCtx.Departments.Find(id));
+            return View(unitOfWork.DepartmentRepository.GetAll());
         }
 
         public IActionResult SetCookies()
@@ -84,13 +91,14 @@ namespace Eyouth1.Controllers
 
         public IActionResult Edit(int id)
         {
-            var dept=companyCtx.Departments.Find(id);
+            var dept=unitOfWork.DepartmentRepository.GetById(id);
             return View(dept);
         }
 
         public IActionResult DispalyPartial(int deptId)
         {
-            var emps=companyCtx.Employees.Where(e=>e.DeptId==deptId).ToList();
+            var emps=unitOfWork.DepartmentRepository.GetEmployees(deptId);
+            //var emps=companyCtx.Employees.Where(e=>e.DeptId==deptId).ToList();
             return PartialView("_MyPartial",emps);
         }
     }
