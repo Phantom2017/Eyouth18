@@ -1,10 +1,12 @@
 ﻿using Eyouth1.Models;
 using Eyouth1.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
 
 namespace Eyouth1.Controllers
 {
+    [Authorize]
     public class DepartmentController : Controller
     {
         private readonly IUnitOfWork unitOfWork;
@@ -22,6 +24,7 @@ namespace Eyouth1.Controllers
             return View(unitOfWork.DepartmentRepository.GetAll());
         }
 
+        //[AllowAnonymous]
         public IActionResult Create()
         {
             return View();
@@ -89,8 +92,10 @@ namespace Eyouth1.Controllers
             return Content("name= " + name + " num= " + num);
         }
 
+        [Authorize(Roles ="Admin,User")]
         public IActionResult Edit(int id)
         {
+            User.Claims.Where(c => c.Type == "");
             var dept=unitOfWork.DepartmentRepository.GetById(id);
             return View(dept);
         }

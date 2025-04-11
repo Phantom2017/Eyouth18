@@ -1,5 +1,6 @@
 using Eyouth1.Models;
 using Eyouth1.Repository;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Eyouth1
@@ -26,6 +27,12 @@ namespace Eyouth1
             //builder.Services.AddScoped<IDepartmentRepository,DepartmentRepository>();    
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+            builder.Services.AddIdentity<AppUser, IdentityRole>(opt =>
+            {
+                opt.Password.RequireNonAlphanumeric=false;   
+                
+            }).AddEntityFrameworkStores<CompanyCtx>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -39,8 +46,8 @@ namespace Eyouth1
 
             app.UseRouting();
 
-            //app.UseAuthentication();
-            app.UseAuthorization();
+            app.UseAuthentication();//username & pass
+            app.UseAuthorization();//Roles
 
             app.MapControllerRoute(
                 name: "myRoute",
@@ -50,7 +57,24 @@ namespace Eyouth1
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             
+            //Add roles to DB
+            var scope=app.Services.CreateScope();
+            var roleMgr = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
+            if (roleMgr.Roles.Count()== 0)
+            {
+                var roles = new List<IdentityRole>
+                {
+                    new IdentityRole("Admin"),
+                    new IdentityRole("Moderator"),
+                    new IdentityRole("User")
+                };
+
+                foreach (var role in roles)
+                {
+                    roleMgr.CreateAsync(role).Wait();
+                }
+            }
 
             app.Run();
         }

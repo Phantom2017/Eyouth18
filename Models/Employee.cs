@@ -30,6 +30,9 @@ namespace Eyouth1.Models
         [Display(Name="Department")]
         public int DeptId { get; set; }
         public Department? Department { get; set; }
+        [ForeignKey("AppUser")]
+        public string UserId { get; set; }
+        public AppUser AppUser { get; set; }
 
     }
 }
