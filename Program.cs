@@ -1,3 +1,4 @@
+using Eyouth1.Hubs;
 using Eyouth1.Models;
 using Eyouth1.Repository;
 using Microsoft.AspNetCore.Identity;
@@ -33,6 +34,8 @@ namespace Eyouth1
                 
             }).AddEntityFrameworkStores<CompanyCtx>();
 
+            builder.Services.AddSignalR();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -49,6 +52,7 @@ namespace Eyouth1
             app.UseAuthentication();//username & pass
             app.UseAuthorization();//Roles
 
+            app.MapHub<ChatHub>("/Chat");
             app.MapControllerRoute(
                 name: "myRoute",
                 pattern: "app/{controller=Employee}/{action=Index}");
